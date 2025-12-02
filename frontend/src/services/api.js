@@ -1,6 +1,22 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// Определяем API URL в зависимости от окружения
+const getApiBaseUrl = () => {
+  // В production используем переменную окружения или production URL
+  if (import.meta.env.PROD) {
+    return import.meta.env.VITE_API_URL || 'https://expensis-analyzer.onrender.com';
+  }
+  // В development используем переменную окружения или localhost
+  return import.meta.env.VITE_API_URL || 'http://localhost:3001';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+// Логирование для отладки (только в development)
+if (import.meta.env.DEV) {
+  console.log('API Base URL:', API_BASE_URL);
+  console.log('VITE_API_URL env:', import.meta.env.VITE_API_URL);
+}
 
 const api = axios.create({
   baseURL: API_BASE_URL,
